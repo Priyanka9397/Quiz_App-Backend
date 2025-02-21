@@ -11,8 +11,8 @@ public class Task {
 
     @Id
     private String id;
-    private Quiz quiz;
-    private Batch batch;
+    private String quizId;
+    private String batchId;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
 
@@ -22,9 +22,9 @@ public class Task {
     public Task() {
     }
 
-    public Task(Quiz quiz, Batch batch, LocalDateTime startTime, LocalDateTime endTime) {
-        this.quiz = quiz;
-        this.batch = batch;
+    public Task(String quiz, String batchId, LocalDateTime startTime, LocalDateTime endTime) {
+        this.quizId = quiz;
+        this.batchId = batchId;
         this.startTime = startTime;
         this.endTime = endTime;
     }
@@ -37,20 +37,20 @@ public class Task {
         this.id = id;
     }
 
-    public Quiz getQuiz() {
-        return quiz;
+    public String getQuizId() {
+        return quizId;
     }
 
-    public void setQuiz(Quiz quiz) {
-        this.quiz = quiz;
+    public void setQuizId(String quiz) {
+        this.quizId = quiz;
     }
 
-    public Batch getBatch() {
-        return batch;
+    public String getBatchId() {
+        return batchId;
     }
 
-    public void setBatch(Batch batch) {
-        this.batch = batch;
+    public void setBatchId(String batchId) {
+        this.batchId = batchId;
     }
 
     public LocalDateTime getStartTime() {

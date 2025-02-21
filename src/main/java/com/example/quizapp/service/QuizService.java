@@ -1,13 +1,14 @@
 package com.example.quizapp.service;
 
-import com.example.quizapp.model.Quiz;
-import com.example.quizapp.repository.QuizRepository;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
-import java.util.List;
-import java.util.Optional;
+import com.example.quizapp.model.Quiz;
+import com.example.quizapp.repository.QuizRepository;
 
 @Service
 public class QuizService {
@@ -17,15 +18,21 @@ public class QuizService {
 
     @Transactional
     public Quiz createQuiz(Quiz quiz) {
+        if (!isValidQuiz(quiz)) {
+            throw new IllegalArgumentException("Invalid quiz data");
+        }
         return quizRepository.save(quiz);
     }
 
     @Transactional
     public Quiz updateQuiz(String id, Quiz quiz) {
+        if (!isValidQuiz(quiz)) {
+            throw new IllegalArgumentException("Invalid quiz data");
+        }
         return quizRepository.findById(id).map(existingQuiz -> {
             existingQuiz.setQuizName(quiz.getQuizName());
             existingQuiz.setQuestions(quiz.getQuestions());
-            existingQuiz.setAnswers(quiz.getAnswers());
+            existingQuiz.setTimeForQuestion(quiz.getTimeForQuestion());
             return quizRepository.save(existingQuiz);
         }).orElse(null);
     }
@@ -41,5 +48,9 @@ public class QuizService {
 
     public Quiz getQuizById(String id) {
         return quizRepository.findById(id).orElse(null);
+    }
+
+    private boolean isValidQuiz(Quiz quiz) {
+        return quiz != null && StringUtils.hasText(quiz.getQuizName()) && quiz.getQuestions() != null && !quiz.getQuestions().isEmpty();
     }
 }

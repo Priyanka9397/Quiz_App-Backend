@@ -1,34 +1,49 @@
 package com.example.quizapp.controller;
 
-import com.example.quizapp.model.Quiz;
-import com.example.quizapp.model.Question;
-import com.example.quizapp.service.QuizService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.quizapp.model.Quiz;
+import com.example.quizapp.service.QuizService;
+
 @RestController
-@RequestMapping("/api/quizzes")
+@RequestMapping("/api/admin/quizzes")
 public class QuizController {
 
     @Autowired
     private QuizService quizService;
 
     @PostMapping
-    public ResponseEntity<Quiz> createQuiz(@RequestBody Quiz quiz) {
-        Quiz createdQuiz = quizService.createQuiz(quiz);
-        return ResponseEntity.ok(createdQuiz);
+    public ResponseEntity<String> createQuiz(@RequestBody Quiz quiz) {
+        try {
+            Quiz createdQuiz = quizService.createQuiz(quiz);
+            return ResponseEntity.ok("" + createdQuiz.getQuizName());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Quiz> updateQuiz(@PathVariable String id, @RequestBody Quiz quiz) {
-        Quiz updatedQuiz = quizService.updateQuiz(id, quiz);
-        if (updatedQuiz != null) {
-            return ResponseEntity.ok(updatedQuiz);
-        } else {
-            return ResponseEntity.notFound().build();
+        try {
+            Quiz updatedQuiz = quizService.updateQuiz(id, quiz);
+            if (updatedQuiz != null) {
+                return ResponseEntity.ok(updatedQuiz);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null);
         }
     }
 

@@ -13,7 +13,7 @@ public class Quiz {
     private String id;
     private String quizName;
     private List<Question> questions;
-    private List<String> answers;
+    private int timeForQuestion;
 
     @Transient
     public static final String SEQUENCE_NAME = "quizzes_sequence";
@@ -21,10 +21,10 @@ public class Quiz {
     public Quiz() {
     }
 
-    public Quiz(String quizName, List<Question> questions, List<String> answers) {
+    public Quiz(String quizName, List<Question> questions, int timeForQuestion) {
         this.quizName = quizName;
         this.questions = questions;
-        this.answers = answers;
+        this.timeForQuestion = timeForQuestion;
     }
 
     public String getId() {
@@ -43,19 +43,19 @@ public class Quiz {
         this.quizName = quizName;
     }
 
-    public List<Question> getQuestions() {
-        return questions;
-    }
-
     public void setQuestions(List<Question> questions) {
         this.questions = questions;
     }
 
-    public List<String> getAnswers() {
-        return answers;
+    public List<Question> getQuestions() {
+        return questions;
     }
 
-    public void setAnswers(List<String> answers) {
-        this.answers = answers;
+    public int getTimeForQuestion() {
+        return timeForQuestion;
+    }
+
+    public void setTimeForQuestion(int timeForQuestion) {
+        this.timeForQuestion = timeForQuestion;
     }
 }
