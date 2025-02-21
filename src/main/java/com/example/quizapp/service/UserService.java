@@ -65,4 +65,13 @@ public class UserService {
         logger.debug("Getting user by email: {}", email);
         return userRepository.findByEmail(email).orElse(null);
     }
+
+    @Transactional
+    public void updateUserBatchId(String userId, String batchId) {
+        logger.debug("Updating batch id for user with id: {}", userId);
+        userRepository.findById(userId).map(existingUser -> {
+            existingUser.setBatchId(batchId);
+            return userRepository.save(existingUser);
+        }).orElseThrow(() -> new RuntimeException("User not found"));
+    }
 }
