@@ -16,6 +16,7 @@ public class User {
     private String email;
     private String password;
     private Set<Role> roles;
+    private String batchId; // P93b4
 
     @Transient
     public static final String SEQUENCE_NAME = "users_sequence";
@@ -77,5 +78,13 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public String getBatchId() { // P5ed5
+        return batchId;
+    }
+
+    public void setBatchId(String batchId) { // P5ed5
+        this.batchId = batchId;
     }
 }

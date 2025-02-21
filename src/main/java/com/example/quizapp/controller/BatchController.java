@@ -2,6 +2,7 @@ package com.example.quizapp.controller;
 
 import com.example.quizapp.model.Batch;
 import com.example.quizapp.service.BatchService;
+import com.example.quizapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,12 +17,13 @@ public class BatchController {
     @Autowired
     private BatchService batchService;
 
+    @Autowired
+    private UserService userService;
+
     @PostMapping
     public ResponseEntity<Batch> createBatch(@RequestBody Map<String, Object> request) {
         String batchName = (String) request.get("batchName");
-        @SuppressWarnings("unchecked")
-        List<String> userIds = (List<String>) request.get("userIds");
-        return ResponseEntity.ok(batchService.createBatch(batchName, userIds));
+        return ResponseEntity.ok(batchService.createBatch(batchName));
     }
 
     @GetMapping
@@ -41,6 +43,14 @@ public class BatchController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBatch(@PathVariable String id) {
         batchService.deleteBatch(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/updateUserBatchId")
+    public ResponseEntity<Void> updateUserBatchId(@RequestBody Map<String, String> request) {
+        String userId = request.get("userId");
+        String batchId = request.get("batchId");
+        userService.updateUserBatchId(userId, batchId);
         return ResponseEntity.ok().build();
     }
 }

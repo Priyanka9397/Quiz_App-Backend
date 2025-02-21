@@ -10,4 +10,5 @@ import com.example.quizapp.model.User;
 @Repository
 public interface UserRepository extends MongoRepository<User, String> {
     Optional<User> findByEmail(String email);
+    Optional<User> findById(String id);
 }

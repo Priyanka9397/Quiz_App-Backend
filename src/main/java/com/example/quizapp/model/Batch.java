@@ -4,15 +4,12 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.annotation.Transient;
 
-import java.util.List;
-
 @Document(collection = "batches")
 public class Batch {
 
     @Id
     private String id;
     private String batchName;
-    private List<String> userIds;  // Changed from List<User> to List<String>
 
     @Transient
     public static final String SEQUENCE_NAME = "batches_sequence";
@@ -20,9 +17,8 @@ public class Batch {
     public Batch() {
     }
 
-    public Batch(String batchName, List<String> userIds) {
+    public Batch(String batchName) {
         this.batchName = batchName;
-        this.userIds = userIds;
     }
 
     public String getId() {
@@ -39,13 +35,5 @@ public class Batch {
 
     public void setBatchName(String batchName) {
         this.batchName = batchName;
-    }
-
-    public List<String> getUserIds() {
-        return userIds;
-    }
-
-    public void setUserIds(List<String> userIds) {
-        this.userIds = userIds;
     }
 }
