@@ -32,4 +32,8 @@ public class TaskService {
     public void deleteTask(String id) {
         taskRepository.deleteById(id);
     }
+
+    public List<Task> getTasksByBatchId(String batchId) {
+        return taskRepository.findByBatchId(batchId);
+    }
 }
