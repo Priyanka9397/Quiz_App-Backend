@@ -1,5 +1,6 @@
 package com.example.quizapp.controller;
 
+import com.example.quizapp.model.Role;
 import com.example.quizapp.model.User;
 import com.example.quizapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +17,12 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    public ResponseEntity<User> addUser(@RequestBody User user) {
+    public ResponseEntity<String> addUser(@RequestBody User user) {
+        if (userService.getUserByEmail(user.getEmail()) != null) {
+            return ResponseEntity.badRequest().body("Email is already taken");
+        }
         User newUser = userService.addUser(user);
-        return ResponseEntity.ok(newUser);
+        return ResponseEntity.ok("User Added - "+ newUser.getEmail());
     }
 
     @PutMapping("/{id}")

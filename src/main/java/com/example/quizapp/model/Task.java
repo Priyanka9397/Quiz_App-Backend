@@ -1,6 +1,7 @@
 package com.example.quizapp.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
@@ -14,6 +15,9 @@ public class Task {
     private Batch batch;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
+
+    @Transient
+    public static final String SEQUENCE_NAME = "tasks_sequence";
 
     public Task() {
     }

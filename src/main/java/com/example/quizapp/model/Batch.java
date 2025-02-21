@@ -2,6 +2,7 @@ package com.example.quizapp.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.annotation.Transient;
 
 import java.util.List;
 
@@ -11,14 +12,17 @@ public class Batch {
     @Id
     private String id;
     private String batchName;
-    private List<User> users;
+    private List<String> userIds;  // Changed from List<User> to List<String>
+
+    @Transient
+    public static final String SEQUENCE_NAME = "batches_sequence";
 
     public Batch() {
     }
 
-    public Batch(String batchName, List<User> users) {
+    public Batch(String batchName, List<String> userIds) {
         this.batchName = batchName;
-        this.users = users;
+        this.userIds = userIds;
     }
 
     public String getId() {
@@ -37,11 +41,11 @@ public class Batch {
         this.batchName = batchName;
     }
 
-    public List<User> getUsers() {
-        return users;
+    public List<String> getUserIds() {
+        return userIds;
     }
 
-    public void setUsers(List<User> users) {
-        this.users = users;
+    public void setUserIds(List<String> userIds) {
+        this.userIds = userIds;
     }
 }

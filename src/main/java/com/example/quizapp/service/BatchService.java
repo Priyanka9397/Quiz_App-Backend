@@ -6,6 +6,7 @@ import com.example.quizapp.repository.BatchRepository;
 import com.example.quizapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,9 +19,15 @@ public class BatchService {
     @Autowired
     private UserRepository userRepository;
 
+    @Transactional
     public Batch createBatch(String batchName, List<String> userIds) {
-        List<User> users = userRepository.findAllById(userIds);
-        Batch batch = new Batch(batchName, users);
+        // Verify that all users exist
+        boolean allUsersExist = userRepository.findAllById(userIds).size() == userIds.size();
+        if (!allUsersExist) {
+            throw new RuntimeException("One or more users not found");
+        }
+        
+        Batch batch = new Batch(batchName, userIds);
         return batchRepository.save(batch);
     }
 
@@ -32,6 +39,7 @@ public class BatchService {
         return batchRepository.findById(id).orElse(null);
     }
 
+    @Transactional
     public void deleteBatch(String id) {
         batchRepository.deleteById(id);
     }
