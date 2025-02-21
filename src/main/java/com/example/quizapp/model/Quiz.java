@@ -12,7 +12,7 @@ public class Quiz {
     @Id
     private String id;
     private String quizName;
-    private List<String> questions;
+    private List<Question> questions;
     private List<String> answers;
 
     @Transient
@@ -21,7 +21,7 @@ public class Quiz {
     public Quiz() {
     }
 
-    public Quiz(String quizName, List<String> questions, List<String> answers) {
+    public Quiz(String quizName, List<Question> questions, List<String> answers) {
         this.quizName = quizName;
         this.questions = questions;
         this.answers = answers;
@@ -43,11 +43,11 @@ public class Quiz {
         this.quizName = quizName;
     }
 
-    public List<String> getQuestions() {
+    public List<Question> getQuestions() {
         return questions;
     }
 
-    public void setQuestions(List<String> questions) {
+    public void setQuestions(List<Question> questions) {
         this.questions = questions;
     }
 
