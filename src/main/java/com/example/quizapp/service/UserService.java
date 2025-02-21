@@ -29,7 +29,7 @@ public class UserService {
     public User addUser(User user) {
         logger.debug("Adding user: {}", user.getEmail());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRoles(Collections.singleton(new Role("ADMIN")));
+        user.setRoles(Collections.singleton(new Role("STUDENT")));
         return userRepository.save(user);
     }
 
@@ -53,7 +53,11 @@ public class UserService {
 
     public List<User> getAllUsers() {
         logger.debug("Getting all users");
-        return userRepository.findAll();
+        
+        List<User> users = userRepository.findAll();
+        // return all users where role is "STUDENT"
+        users.removeIf(user -> !user.getRoles().iterator().next().getName().equals("STUDENT"));
+        return users;
     }
 
     public User getUserById(String id) {
@@ -73,5 +77,11 @@ public class UserService {
             existingUser.setBatchId(batchId);
             return userRepository.save(existingUser);
         }).orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
+    //// get all users in a batch
+    public List<User> getUsersByBatchId(String batchId) {
+        logger.debug("Getting all users in batch with id: {}", batchId);
+        return userRepository.findByBatchId(batchId);
     }
 }
