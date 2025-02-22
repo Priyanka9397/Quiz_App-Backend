@@ -33,6 +33,18 @@ public class TaskService {
         return taskRepository.save(task);
     }
 
+    @Transactional
+    public Task updateTask(String id, Task task) {
+        return taskRepository.findById(id).map(existingTask -> {
+            existingTask.setBatchId(task.getBatchId());
+            existingTask.setQuizId(task.getQuizId());
+            existingTask.setStartTime(task.getStartTime());
+            existingTask.setEndTime(task.getEndTime());
+            return taskRepository.save(existingTask);
+        }).orElse(null);
+    }
+
+
     public List<TaskResults> getAllTasks() {
         List<Task> tasks = taskRepository.findAll();
         List<TaskResults> taskResults = new ArrayList<>();

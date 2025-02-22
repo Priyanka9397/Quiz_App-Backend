@@ -6,13 +6,7 @@ import com.example.quizapp.service.TaskResults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.quizapp.model.Task;
 import com.example.quizapp.service.TaskService;
@@ -34,6 +28,12 @@ public class TaskController {
     public ResponseEntity<List<TaskResults>> getAllTasks() {
         List<TaskResults> tasks = taskService.getAllTasks();
         return ResponseEntity.ok(tasks);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Task> updateTask(@PathVariable String id, @RequestBody Task task) {
+        Task updatedTask = taskService.updateTask(id, task);
+        return ResponseEntity.ok(updatedTask);
     }
 
     @GetMapping("/{id}")
