@@ -52,7 +52,11 @@ public class AuthController {
             SecurityContextHolder.getContext().setAuthentication(authentication);
             String jwt = jwtUtil.generateToken(user.getEmail());
             logger.info("User authenticated successfully: {}", user.getEmail());
-            return ResponseEntity.ok(jwt);
+            // get user details
+            user = userService.getUserByEmail(user.getEmail());
+
+            return ResponseEntity.ok(Map.of("jwt", jwt, "user", user));
+
         } catch (Exception e) {
             logger.error("Authentication failed for user: {}", user.getEmail(), e);
             return ResponseEntity.status(401).body("Authentication failed");

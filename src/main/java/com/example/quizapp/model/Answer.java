@@ -1,10 +1,10 @@
 package com.example.quizapp.model;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import java.time.LocalDateTime;
 import java.util.List;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "answers")
 public class Answer {
@@ -14,7 +14,7 @@ public class Answer {
     private String taskId;
     private String studentId;
     private String quizId;
-    private List<String> answerOptions;
+    private List<Integer> answerOptions;
     private LocalDateTime timestamp;
 
     public String getId() {
@@ -49,11 +49,11 @@ public class Answer {
         this.quizId = quizId;
     }
 
-    public List<String> getAnswerOptions() {
+    public List<Integer> getAnswerOptions() {
         return answerOptions;
     }
 
-    public void setAnswerOptions(List<String> answerOptions) {
+    public void setAnswerOptions(List<Integer> answerOptions) {
         this.answerOptions = answerOptions;
     }
 

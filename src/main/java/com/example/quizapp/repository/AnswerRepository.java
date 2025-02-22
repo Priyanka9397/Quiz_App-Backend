@@ -9,4 +9,7 @@ import java.util.List;
 @Repository
 public interface AnswerRepository extends MongoRepository<Answer, String> {
     List<Answer> findByTaskId(String taskId);
+    //List<Answer> findAllByUserId(String userId);
+
+    List<Answer> findByStudentId(String userId);
 }

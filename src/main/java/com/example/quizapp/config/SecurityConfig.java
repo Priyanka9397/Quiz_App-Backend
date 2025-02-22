@@ -1,5 +1,7 @@
 package com.example.quizapp.config;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 
 import com.example.quizapp.filter.JwtRequestFilter;
 import com.example.quizapp.service.UserDetailsServiceImpl;
@@ -30,11 +33,25 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
+        http .cors(cors -> cors
+                        .configurationSource(request -> {
+                            CorsConfiguration config = new CorsConfiguration();
+                            config.setAllowedOrigins(Arrays.asList("*"));
+                            config.setAllowedMethods(Arrays.asList("*"));
+                            config.setAllowedHeaders(Arrays.asList("*"));
+                            //config.setAllowCredentials(true);
+                            return config;
+                        })
+                )
                 .csrf(csrf -> csrf.disable())
+
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/student/tasks").authenticated()
-                        .requestMatchers("/**").permitAll()
+//                        .requestMatchers("/api/student/tasks").authenticated()
+                        .requestMatchers("/api/auth/**").permitAll()
+                                .requestMatchers("api/admin/auth/**").permitAll()
+                        .requestMatchers("/api/admin/**").authenticated()
+                        .requestMatchers("/api/student/**").authenticated()
+
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

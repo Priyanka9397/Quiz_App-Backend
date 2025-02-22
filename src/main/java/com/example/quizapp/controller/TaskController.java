@@ -2,6 +2,7 @@ package com.example.quizapp.controller;
 
 import java.util.List;
 
+import com.example.quizapp.service.TaskResults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -30,8 +31,8 @@ public class TaskController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Task>> getAllTasks() {
-        List<Task> tasks = taskService.getAllTasks();
+    public ResponseEntity<List<TaskResults>> getAllTasks() {
+        List<TaskResults> tasks = taskService.getAllTasks();
         return ResponseEntity.ok(tasks);
     }
 
