@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Quiz App
 
 This is a comprehensive quiz application built using Spring Boot and MongoDB. The application supports user authentication, role-based access control, quiz management, task assignment, and analytics.
@@ -145,3 +146,6 @@ This is a comprehensive quiz application built using Spring Boot and MongoDB. Th
 
 ## License
 This project is licensed under the MIT License.
+=======
+# Quiz_App-Backend
+>>>>>>> ceeadf7ae7d190e98eb6417b48cde04c2ec5ca6c
