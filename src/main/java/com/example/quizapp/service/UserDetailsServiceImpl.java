@@ -1,5 +1,6 @@
 package com.example.quizapp.service;
 
+import com.example.quizapp.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,7 +23,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getEmail())
                 .password(user.getPassword())
-                .authorities(user.getRoles().stream().map(role -> role.getName()).toArray(String[]::new))
+                .authorities(user.getRoles().stream().map(Role::getName).toArray(String[]::new))
                 .accountExpired(false)
                 .accountLocked(false)
                 .credentialsExpired(false)

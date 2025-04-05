@@ -31,6 +31,12 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
 
+        // Skip filtering for public endpoints
+        if (request.getRequestURI().startsWith("/api/admin/users/register-admin")) {
+            chain.doFilter(request, response);
+            return; // Skip JWT authentication for this endpoint
+        }
+
         final String authorizationHeader = request.getHeader("Authorization");
 
         String username = null;

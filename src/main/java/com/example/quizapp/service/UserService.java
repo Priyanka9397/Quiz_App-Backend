@@ -1,8 +1,11 @@
 package com.example.quizapp.service;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import com.example.quizapp.repository.RoleRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +26,50 @@ public class UserService {
     private UserRepository userRepository;
 
     @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private EmailService emailService;
 
     @Transactional
     public User addUser(User user) {
         logger.debug("Adding user: {}", user.getEmail());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRoles(Collections.singleton(new Role("STUDENT")));
-        return userRepository.save(user);
+        // Assign "STUDENT" role by default
+        Role studentRole = roleRepository.findByName("STUDENT")
+                .orElseThrow(() -> new RuntimeException("Role 'STUDENT' not found"));
+        user.setRoles(Collections.singleton(studentRole));
+        User savedUser = userRepository.save(user);
+
+        // Send welcome email
+        emailService.sendRegistrationEmail(savedUser.getEmail(), savedUser.getFirstName());
+
+        return savedUser;
+    }
+
+    @Transactional
+    public User addAdmin(User admin) {
+        logger.debug("Adding admin: {}", admin.getEmail());
+        admin.setPassword(passwordEncoder.encode(admin.getPassword()));
+
+        // Assign both "ADMIN" and "STUDENT" roles
+        Role adminRole = roleRepository.findByName("ADMIN")
+                .orElseThrow(() -> new RuntimeException("Role 'ADMIN' not found"));
+
+        Set<Role> roles = new HashSet<>();
+        roles.add(adminRole);
+
+        admin.setRoles(roles);
+
+        User savedAdmin = userRepository.save(admin);
+
+        // Send admin-specific welcome email
+        emailService.sendRegistrationEmail(savedAdmin.getEmail(), "Admin " + savedAdmin.getFirstName());
+
+        return savedAdmin;
     }
 
     @Transactional

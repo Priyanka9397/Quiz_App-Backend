@@ -48,7 +48,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
 //                        .requestMatchers("/api/student/tasks").authenticated()
                         .requestMatchers("/api/auth/**").permitAll()
-                                .requestMatchers("api/admin/auth/**").permitAll()
+                                .requestMatchers("/api/admin/users/register-admin").permitAll()
                         .requestMatchers("/api/admin/**").authenticated()
                         .requestMatchers("/api/student/**").authenticated()
 

@@ -2,11 +2,17 @@ package com.example.quizapp.model;
 
 import java.util.Set;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "users")
+@Data
+@AllArgsConstructor
 public class User {
 
     @Id
@@ -15,6 +21,8 @@ public class User {
     private String lastName;
     private String email;
     private String password;
+
+    @DBRef
     private Set<Role> roles;
     private String batchId; // P93b4
 

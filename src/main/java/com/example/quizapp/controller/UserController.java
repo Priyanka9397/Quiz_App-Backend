@@ -25,6 +25,15 @@ public class UserController {
         return ResponseEntity.ok("User Added - "+ newUser.getEmail());
     }
 
+    @PostMapping("/register-admin")
+    public ResponseEntity<String> registerAdmin(@RequestBody User admin) {
+        if (userService.getUserByEmail(admin.getEmail()) != null) {
+            return ResponseEntity.badRequest().body("Email is already taken");
+        }
+        User newAdmin = userService.addAdmin(admin);
+        return ResponseEntity.ok("Admin Registered Successfully - " + newAdmin.getEmail());
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<User> editUser(@PathVariable String id, @RequestBody User user) {
         User updatedUser = userService.editUser(id, user);
